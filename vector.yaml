@@ -1,0 +1,49 @@
+sources:
+  suricata_logs:
+    type: "file"
+    include: ["/var/log/suricata/eve.json"]
+    # For JSON logs, it is best to read line-by-line before parsing
+    read_from: "beginning" 
+
+transforms:
+  parse_and_filter:
+    type: "remap"
+    inputs: ["suricata_logs"]
+    source: |
+      # Parse the incoming log line as JSON
+      . = parse_json!(.message)
+      
+      # Only keep the log if it's an alert. Drop everything else.
+      if .event_type != "alert" {
+        abort
+      }
+
+      # 3. Drop massive background protocol noise to protect n8n
+      if .alert.signature_id == 2231000 || .alert.signature_id == 2016149 || .alert.signature_id == 2210020 {
+        abort
+      }
+
+sinks:
+  n8n_webhook:
+    type: "http"
+    inputs: ["parse_and_filter"]
+    uri: "http://172.17.0.1:5678/webhook/suricata-alerts"
+    method: "post"
+    compression: "none"
+    encoding:
+      codec: "json"
+    # --- ADD THIS BATCH & REQUEST CONFIGURATION ---
+    batch:
+      max_events: 1          # Send alerts one by one so n8n isn't overwhelmed
+      timeout_secs: 1        # Don't wait around to bundle logs
+    request:
+      timeout_secs: 120       # Give n8n up to 60 seconds if the container is busy
+      retry_attempts: 2      # Retry 5 times before dropping logs
+      retry_initial_backoff_secs: 2
+
+  # --- ADD THIS DEBUGGING SINK ---
+  debug_stdout:
+    type: "console"
+    inputs: ["parse_and_filter"]
+    encoding:
+      codec: "json"
