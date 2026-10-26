@@ -69,7 +69,7 @@ services:
       # Control Plane mTLS Paths (Corrected last variable line to _CLIENT_CA_FILE)
       - SANDBOX_RUNNER_CONTROL_GRPC_TLS_CERT_FILE=/tls/runner/cert.pem
       - SANDBOX_RUNNER_CONTROL_GRPC_TLS_KEY_FILE=/tls/runner/key.pem
-      - SANDBOX_RUNNER_CONTROL_GRPC_TLS_CLIENT_CA_FILE=/tls/api/cert.pem  # <-- FIXED THIS LINE
+      - SANDBOX_RUNNER_CONTROL_GRPC_TLS_CLIENT_CA_FILE=/tls/api/cert.pem
       # Registration mTLS Paths
       - SANDBOX_RUNNER_REGISTRATION_GRPC_CERT_FILE=/tls/runner/cert.pem
       - SANDBOX_RUNNER_REGISTRATION_GRPC_KEY_FILE=/tls/runner/key.pem
@@ -159,10 +159,10 @@ services:
       - N8N_INSTANCE_AI_MODEL=deepseek-r1:7b
       - N8N_INSTANCE_AI_MODEL_API_KEY=any-text-here-ollama-ignores-this
       - N8N_INSTANCE_AI_MODEL_URL=http://127.0.0.1:11434/v1
-      - N8N_INSTANCE_AI_WEB_SEARCH_API_KEY=unused-but-required # SearXNG doesn't require a key, but n8n requires text here to validate the config
+      - N8N_INSTANCE_AI_WEB_SEARCH_API_KEY=unused-but-required 
       # --- Fix the 30-Second AI/Sandbox Timeout ---
       - N8N_CONCURRENT_RESOURCE_COMPILATION_LIMIT=2
-      - N8N_INSTANCE_AI_EXECUTION_TIMEOUT=300000        # Sets internal AI timeout to 120 seconds
+      - N8N_INSTANCE_AI_EXECUTION_TIMEOUT=300000        # Sets internal AI timeout to 300 seconds
       - EXECUTIONS_TIMEOUT=300                           # Matches your environment's baseline 
       - EXECUTIONS_TIMEOUT_MAX=300                       # Matches your environment's maximum
       - EXECUTIONS_DATA_PRUNE=true # Prevents the database from bloating with millions of logs
@@ -220,6 +220,3 @@ services:
     #extra_hosts:
     #  - "host.docker.internal:host-gateway"
     restart: unless-stopped
-    #dns:
-    #  - 1.1.1.1
-    #  - 8.8.8.8
