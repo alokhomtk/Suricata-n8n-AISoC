@@ -58,7 +58,7 @@ services:
     environment:
       - SANDBOX_RUNNER_DOCKER_SANDBOX_IMAGE=n8nio/n8n-sandbox-service-execution:latest
       - SANDBOX_RUNNER_API_KEYS=secure-orange-pi-sandbox-token-9988
-      - SANDBOX_RUNNER_REGISTRATION_TOKEN=my-shared-registration-secret-1234
+      - SANDBOX_RUNNER_REGISTRATION_TOKEN=<change-this-token>
       - SANDBOX_RUNNER_HTTP_BASE_URL=http://sandbox-runner:8080
       - SANDBOX_RUNNER_API_GRPC_ADDR=sandbox-api:8081
       - SANDBOX_RUNNER_API_ADDR=sandbox-api:8081
