@@ -8,3 +8,6 @@ Also vector would be applied to process Suricata eve logs and jsons would be web
 #### Ubuntu server specs: 8 core, 16 GB RAM.
 #### Observations: 15 jsons per sec on n8n webhook all run with docker compose.
 #### Docker compose: the compose file is attached. the vector uses vector.yml to process suricata logs to send it to webhook.
+
+#### Network diagram
+<img width="1122" height="571" alt="network diagram" src="https://github.com/user-attachments/assets/d0d1ed81-4af0-45fc-9b98-710781770d0e" />
